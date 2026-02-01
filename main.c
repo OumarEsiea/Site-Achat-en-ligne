@@ -20,17 +20,33 @@ int main(){
     }
     int quitter=1;
     while(quitter){
+#ifdef _WIN32
         system("cls");
+#else
+        system("clear");
+#endif
         afficherInfoAcheteur(acheteur);
         switch(menuPrincipal())
             {
             case 1: //Consulter catalogue
+#ifdef _WIN32
                 system("cls");
+#else
+                system("clear");
+#endif
                 consulterCatalogue();
+#ifdef _WIN32
                 system("PAUSE");
+#else
+                system("read -n 1 -s -r -p 'Appuyez sur une touche pour continuer...'\n");
+#endif
                 break;
             case 2:  //Consulter Panier
+#ifdef _WIN32
                 system("cls");
+#else
+                system("clear");
+#endif
                 acheteur=ConsulterPanier(acheteur);
                 break;
             default://Fermer
@@ -38,7 +54,11 @@ int main(){
                 break;
             }
     }
+#ifdef _WIN32
     system("cls");
+#else
+    system("clear");
+#endif
     printf("\n\n\n\t\t\t\t%s\n\n",text[10]);
     return 0;
 }
@@ -48,32 +68,76 @@ Acheteur ConsulterPanier(Acheteur a){
     int quitter=1;
     printf("\t\t\t\tOPERATIONS DU PANIER\n");
     while(quitter){
-            system("cls");
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
         switch(menuPanier()){
             case 1:
+#ifdef _WIN32
                 system("cls");
+#else
+                system("clear");
+#endif
                 a.monPanier = ajouterArticle(a.monPanier);
+#ifdef _WIN32
                 system("PAUSE");
+#else
+                system("read -n 1 -s -r -p 'Appuyez sur une touche pour continuer...'\n");
+#endif
                 break;
             case 2:
+#ifdef _WIN32
                 system("cls");
+#else
+                system("clear");
+#endif
                 a.monPanier = supprimerArticle(a.monPanier);
+#ifdef _WIN32
                 system("PAUSE");
+#else
+                system("read -n 1 -s -r -p 'Appuyez sur une touche pour continuer...'\n");
+#endif
                 break;
             case 3:
+#ifdef _WIN32
                 system("cls");
+#else
+                system("clear");
+#endif
                 afficherPanier(a);
+#ifdef _WIN32
                 system("PAUSE");
+#else
+                system("read -n 1 -s -r -p 'Appuyez sur une touche pour continuer...'\n");
+#endif
                 break;
             case 4:
+#ifdef _WIN32
                 system("cls");
+#else
+                system("clear");
+#endif
                 afficherHistorique(a);
+#ifdef _WIN32
                 system("PAUSE");
+#else
+                system("read -n 1 -s -r -p 'Appuyez sur une touche pour continuer...'\n");
+#endif
                 break;
             case 5:
+#ifdef _WIN32
                 system("cls");
+#else
+                system("clear");
+#endif
                 a=facturation(a);
+#ifdef _WIN32
                 system("PAUSE");
+#else
+                system("read -n 1 -s -r -p 'Appuyez sur une touche pour continuer...'\n");
+#endif
                 break;
             default:
                 quitter=0;
@@ -164,7 +228,7 @@ Panier ajouterArticle(Panier p){
     printf("\t\t\t\t\t\tLES PRODUITS DU CATALOGUE\n");
     printf("\t\t\t\t\t\t\t__________\n\n");
     afficherCatalogue(arbre);
-    printf("\t\t\CHOISIR LE PRODUIT A AJOUTER\n");
+    printf("\t\tCHOISIR LE PRODUIT A AJOUTER\n");
     int num=-1,q=-1;
     do{
             printf("Choisir le numero  de  l'article a ajouter :    ");
@@ -323,15 +387,19 @@ Acheteur facturation(Acheteur a){
          printf("%s (1)- Oui   (2)- Non\n",text[14]); int choix=-1;
     do{
          scanf("%d",&choix);
-         if(choix!=1 && choix!=0)
+         if(choix!=1 && choix!=2)
             printf("%s",error[0]);
-    }while(choix!=1 && choix!=0);
-    if(choix){
-            system("cls");
+    }while(choix!=1 && choix!=2);
+    if(choix==1){
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
         afficherInfoAcheteur(a);
         printf("\t\t\t\tFACTURE NUMERO %d\n\n",rand()%600);
         afficherAllArticle(a.monPanier.articles);
-        printf("\t\t\t\t\t\t\t%s : %.2f TTC\n\n",text[13],montant(a.monPanier.articles));
+        printf("\t\t\t\t\t\t%s : %.2f TTC\n\n",text[13],montant(a.monPanier.articles));
         a.monPanier.articles=0;
         a.monPanier.montantTotal=0.0;
         a.monPanier.historiqueOperation=ajouterHistorique(a.monPanier.historiqueOperation,"Facturation");
